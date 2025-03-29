@@ -2,12 +2,13 @@ import com.example.Feline;
 import com.example.Lion;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
 
 import java.util.List;
+
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
 public class LionTests {
 
@@ -18,14 +19,13 @@ public class LionTests {
         feline = Mockito.mock(Feline.class);
     }
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
     @Test
-    public void throwsExceptionForInvalidSex() throws Exception {
-        thrown.expect(Exception.class);
-        thrown.expectMessage("Используйте допустимые значения пола животного - самец или самка");
-        Lion lion = new Lion(feline, "Другое");
+    public void throwsExceptionForInvalidSex() {
+        Exception exception = assertThrows(Exception.class,
+                () -> {
+                    new Lion(feline, "Другое");
+                });
+        assertTrue(exception.getMessage().contains("Используйте допустимые значения пола животного - самец или самка"));
     }
 
     @Test
